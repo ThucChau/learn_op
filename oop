@@ -1,0 +1,133 @@
+️🎖️ OOP️ 🎖️
+
+- lập trình hướng đối tượng
+- là lập trình theo tư tưởng => tạo ra các đối tượng (object) và cho các đối tượng
+tương tác với nhau
+
+📌 khai báo class : 
+    - constructor : bộ khởi tạo => chạy tự động khi ta tạo object => __constructor()
+        + tham số của constructor -> chính là tham số được truyên vào khi khởi tạo đối tượng => $tom = new ConMeo('Tom');
+    - destruct : chạy khi instance được hủy bỏ => ít dùng
+    - properties : thuộc tính cụ thể của 1 class
+
+📌 Kế thừa : extends
+    - super() : gọi constructor của class Cha (trong JS)
+    - parent::__constructor() : trong php -> trỏ đến constructor của class Cha
+    - dấu :: là static method
+
+📌 Trong lập trình hướng đối tượng sẽ có 3 cấp độ phạm vi truy cập : 
+    - public : toàn cục (global) - ở đâu cũng truy cập được
+    - private : chỉ truy cập dữ liệu được trong class mà thôi
+    - protected : chỉ truy cập dữ liệu được trong class và class kế thừa
+
+    => thuộc tính : bắt buộc phải có thuộc tính chỉ mức độ truy cập -> public $age = 30;
+    => Function : cũng giống như thuộc tính phải có từ khóa mức độ truy cập -> public function getAge() {}
+
+📌 Static Properties  và Static Function
+
+    - chỉ có thể sử dụng sau khi init object
+    - có thể truy cập trực tiếp thông qua tên class
+    - dữ liệu thuộc vê riêng của mỗi object (tức là các object dù có cùng 1 thuộc tính nhưng nó sẽ mang 1 giá trị khác nhau cho từng object)
+    - giúp ta không phụ thuộc vào object 
+        -> những hàm nào có logic xử lý tương tự mà được các object dùng tới. Thay vì chúng ta phải tạo các Object rồi gọi tới hàm đó thì không cần
+        rắc rối như thế => static giải quyết vấn đề này vì Static có thể dùng tên class gọi trực tiếp đến hàm có keyword static
+        VD: ta có 1 class TinhToan, trong class TinhToan có phương thức 
+            class TinhToan {
+                public int Cong(int $a, int $b) : int {
+                    return $a + $b;
+                }
+            }
+        - nếu chúng ta muốn xài hàm Cộng này phải tạo ra 1 object => $calculate = new TinhToan(); -> sau đó sẽ gọi đến hàm cộng $calculate.Cong(1,2);
+        - Ở đây việc tạo object hơi thừa. Vì với bất kì object nào của class TinhToan gọi tới hàm Cong() thì cũng xử lý logic như nhau cả.
+        - Giải quyết : chỉ cần thêm keyword 'static' vào function Cong() => public static int Cong(int $a, int $b) {} là OK.
+        => gọi như sau : TinhToan.Cong(1,2);
+        - còn phương thức tùy vào object mà ra kết quả khác nhau thì ko xài static.
+            VD: hàm tính SoNguyen, tính SoChan -> đều ra kết quả khác nhau => không cần dùng static
+
+    + Static Properties
+        - không khởi tạo đối tượng
+        => Person::$name
+
+    + Static Method 
+        - là hàm nằm trong class
+
+
+📌 This và Seft :
+    
+    + this : 
+        - sẽ tham chiếu tới object gần nhất
+        - $this sẽ dùng gọi static function
+        - không dùng gọi các static properties
+    
+    + seft : 
+        - sẽ tham chiếu đến class hiện tại
+        - nó sẽ gọi đến method của chính class chứa nó
+        - dùng để gọi static function và static properties
+
+📌 namespace :
+    
+    - là 1 cách đóng gói (package) những cái class vào 1 gói
+    - không liên quan đến các gói khác
+    - đặt trên đầu file
+    - dùng nhiều trong Laravel
+    - khi sử dụng thư viện (thirty-party)
+    - 1 project có nhiều members cùng code thì ắt hẳn sẽ xảy ra case là đặt tên trùng class, function
+    => giải quyết vấn đề này : nên đặt namespace
+    -> vì namespace nó sẽ tạo ra 1 gói (package) bao bọc code của từng member và giúp cho các code khác dù trùng
+    cũng có thể chạy được bình thường
+
+    - Cách dùng : namespace company\member_1;
+    - khi khởi tạo 1 object cần phải biết đầy đủ namespace rồi đến tên_class
+        => $tom = new company\member_1\conMeo(); - (cách 1)
+        => dùng với keyword 'use' : use tên_namespace\tên_class as đặt_tên - (cách 2) -> sử dụng class với 1 tên khác
+        vd: use company\member_1\conMeo as member1Cat;
+            use company\member_2\conMeo as member2Cat;
+
+            $jerry = new member2Cat();
+            $tom = new member1Cat();
+
+📌 Abstract Class :
+
+    - tham khảo : https://tiepxdev.xyz/2020-05-20-abstract-trong-php/
+    - lớp trừu tượng
+    - sử dụng khi thiết kế hệ thống cơ bản, là các class cơ sở quan trọng
+    - thường được viết bởi dev có exp
+    - đặt keyword 'abstract' trước class là được
+    - chứa các method trừu tượng (define thôi chứ không được phát triển)
+    ❌ không được khởi tạo đối tượng từ một Abstract Class
+    ❌ properties không được ở dạng Abstract
+    - tất cả các Class được kế thừa từ Abstract Class phải định nghĩa (code) lại các method của Abstract class
+
+    🎯 là một class cha cho tất cả các class con có cùng nhiệm vụ, và chúng có thể có 1 số hàm chung có thể sử sụng 
+    và có 1 số hàm abstract trống chỉ để ghi đè lên ở lớp con.
+    🎯 Những lớp được kế thừa từ class Cha (vd: Animals) có cùng bản chất và nhiều điểm chung tuy nhiên chúng có 1 vài khác biệt 
+    được thể hiện qua abstract function, đồng thời sẽ override lại từ lớp con
+    
+    + Vai trò của Abstract Class trong php : 
+        - Ép buộc người lập trình phải tuân thủ theo một số các phương thức được đặt ra
+        - các phương thức này đã được định nghĩa sẵn những thứ cơ bản trong Abstract Class => giúp cho lập trình viên 
+        có thể kế thừa các phương thức này và phát triển ở lớp con của họ.
+
+📌 Interface : 
+
+    🎯 Interfaces là 100% abstract classes  
+    🎯 chúng đều có methods nhưng không có “ruột”, không thể chứa nội dung trong methods hay property.
+    - Dùng từ khóa implements để kế thừa, thay vì extends.
+    - Tất cả các phương thức (methods/functions) trong interface đều phải dạng public
+    ❌ KHÔNG THỂ tạo constructor trong interface.
+    ❌ KHÔNG THỂ khởi tạo đối tượng
+    - cho phép đa kế thừa
+    - Interface thì chỉ có thể khai báo phương thức chứ không được triển khai code cho phương thức đó
+    ️🎯 định nghĩa ra các tính năng riêng lẻ, có thể sử dụng cho nhiều class
+
+    ☢️ Lưu ý: Khi một class sử dụng/implement một interface, class PHẢI định nghĩa tất cả các phương thức/methods của interface. 
+            Nếu không là có lỗi.
+
+    + Vậy khi nào dùng Class? Khi nào dùng Interface?
+        - nếu bạn chọn một class để phục vụ chức năng làm “thầy bu” cho các class khác, hãy chọn interface
+        - Khi bạn biết các class cần có nhưng chưa chắc về chi tiết, dùng interface
+        - Khi bạn muốn vạch ra một cách nhanh chóng cấu trúc của hệ thống mà các class kế thừa, có thể dự đoán được, ổn định.
+
+
+
+Happy Coding ❤️❤️❤️
